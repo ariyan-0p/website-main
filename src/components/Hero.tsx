@@ -213,6 +213,8 @@ export default function Hero({ onOpenModal }: HeroProps) {
 
   const carouselTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const textTimer     = useRef<ReturnType<typeof setInterval> | null>(null);
+  const heroRef       = useRef<HTMLDivElement>(null);       // ← CHANGE 1: added ref
+  const isVisible     = useRef(true);                       // ← CHANGE 2: visibility flag
 
   // ── breakpoint detection ────────────────────────────────────
   useEffect(() => {
@@ -231,13 +233,26 @@ export default function Hero({ onOpenModal }: HeroProps) {
     return () => { if (textTimer.current) clearInterval(textTimer.current); };
   }, []);
 
+  // ── CHANGE 3: pause carousel when hero scrolled out of view ──
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { isVisible.current = entry.isIntersecting; },
+      { threshold: 0.2 }
+    );
+    observer.observe(heroRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   // ── carousel auto-advance ───────────────────────────────────
   const startCarousel = useCallback(() => {
     if (carouselTimer.current) clearInterval(carouselTimer.current);
-    carouselTimer.current = setInterval(
-      () => setActive((p) => (p + 1) % slides.length),
-      CAROUSEL_SPEED
-    );
+    carouselTimer.current = setInterval(() => {
+      // Only update state when hero is visible — prevents scroll-jump
+      if (isVisible.current) {
+        setActive((p) => (p + 1) % slides.length);
+      }
+    }, CAROUSEL_SPEED);
   }, []);
 
   useEffect(() => {
@@ -263,15 +278,17 @@ export default function Hero({ onOpenModal }: HeroProps) {
   };
 
   return (
-    <div style={{
-      position: "relative", width: "100%", minHeight: "100vh",
-      display: "flex", flexDirection: "column",
-      alignItems: "center", justifyContent: "center",
-      overflow: "hidden",
-      background: t.bg,
-      paddingTop: 80, paddingBottom: 40,
-      transition: "background 0.4s ease",
-    }}>
+    <div
+      ref={heroRef}   // ← attached here
+      style={{
+        position: "relative", width: "100%", minHeight: "100vh",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        overflow: "hidden",
+        background: t.bg,
+        paddingTop: 80, paddingBottom: 40,
+        transition: "background 0.4s ease",
+      }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap');
@@ -394,7 +411,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
             justifyContent:"space-between", gap:20,
           }}
         >
-          {/* LEFT: carousel — YOUR EXACT original */}
+          {/* LEFT: carousel */}
           <div style={{ flex:"0 0 580px", display:"flex", flexDirection:"column", alignItems:"center" }}>
             <div style={{ position:"relative", width:"100%", height:420, display:"flex", alignItems:"center", justifyContent:"center" }}>
               {slides.map((s, index) => {
@@ -427,7 +444,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
             </div>
           </div>
 
-          {/* RIGHT: content — YOUR EXACT original */}
+          {/* RIGHT: content */}
           <div style={{ flex:1, paddingLeft:0, display:"flex", flexDirection:"column", maxWidth:560, position:"relative", zIndex:60 }}>
             <AnimatePresence mode="wait">
               <motion.div
@@ -447,7 +464,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
                 }}>
                   {slide.tag}
                 </span>
-
                 <h2 style={{
                   fontFamily:"'Outfit',sans-serif", fontWeight:800,
                   fontSize:"clamp(1.5rem,3vw,2.4rem)",
@@ -456,7 +472,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
                 }}>
                   {slide.heading}
                 </h2>
-
                 <p style={{
                   fontFamily:"'Outfit',sans-serif", fontWeight:400,
                   fontSize:"0.95rem", lineHeight:1.72,
@@ -464,7 +479,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
                 }}>
                   {slide.description}
                 </p>
-
                 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:32 }}>
                   {slide.features.map((f) => {
                     const Icon = f.icon;
@@ -491,7 +505,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
                     );
                   })}
                 </div>
-
                 <Link
                   to={slide.link}
                   className="know-more-btn"
@@ -513,7 +526,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
       )}
 
       {/* ════════════════════════════════════════════════════════
-          MOBILE — new layout, only shown below 768px
+          MOBILE
       ════════════════════════════════════════════════════════ */}
       {isMobile && (
         <motion.div
@@ -526,22 +539,9 @@ export default function Hero({ onOpenModal }: HeroProps) {
             display:"flex", flexDirection:"column", gap:24,
           }}
         >
-          {/* 1. Tab strip to switch slides */}
-          <MobileTabs
-            active={active}
-            setActive={handleSetActive}
-            isDark={isDark}
-            t={t}
-          />
+          <MobileTabs active={active} setActive={handleSetActive} isDark={isDark} t={t} />
+          <MobileCard active={active} setActive={handleSetActive} isDark={isDark} />
 
-          {/* 2. Full-width swipeable image */}
-          <MobileCard
-            active={active}
-            setActive={handleSetActive}
-            isDark={isDark}
-          />
-
-          {/* 3. Content — same structure as desktop, adapted for mobile */}
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
@@ -551,7 +551,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
               transition={{ duration:0.38, ease:[0.22,1,0.36,1] }}
               style={{ display:"flex", flexDirection:"column" }}
             >
-              {/* Tag — same style as desktop */}
               <span style={{
                 display:"inline-block", alignSelf:"flex-start",
                 fontFamily:"'DM Mono',monospace", fontSize:"0.6rem",
@@ -561,8 +560,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
               }}>
                 {slide.tag}
               </span>
-
-              {/* Heading */}
               <h2 style={{
                 fontFamily:"'Outfit',sans-serif", fontWeight:800,
                 fontSize:"clamp(1.4rem,5.5vw,1.85rem)",
@@ -571,8 +568,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
               }}>
                 {slide.heading}
               </h2>
-
-              {/* Description */}
               <p style={{
                 fontFamily:"'Outfit',sans-serif", fontWeight:400,
                 fontSize:"0.9rem", lineHeight:1.72,
@@ -580,8 +575,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
               }}>
                 {slide.description}
               </p>
-
-              {/* Feature chips — same 2×2 grid as desktop */}
               <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:24 }}>
                 {slide.features.map((f) => {
                   const Icon = f.icon;
@@ -609,8 +602,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
                   );
                 })}
               </div>
-
-              {/* CTA — same style as desktop */}
               <Link
                 to={slide.link}
                 className="know-more-btn"
@@ -629,7 +620,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
           </AnimatePresence>
         </motion.div>
       )}
-
     </div>
   );
 }
