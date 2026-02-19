@@ -35,7 +35,7 @@ export default function TrustedBy() {
       <div className="max-w-7xl mx-auto px-6 text-center mb-16">
         <h2 
           style={{ 
-            fontFamily: "'Outfit', sans-serif", 
+            fontFamily: "'Plus Jakarta Sans', sans-serif", 
             fontSize: "clamp(2rem, 4vw, 3rem)",
             fontWeight: 800,
             color: t.text,
@@ -88,7 +88,7 @@ export default function TrustedBy() {
                 {/* Brand Name */}
                 <span 
                   style={{ 
-                    fontFamily: "'Outfit', sans-serif", 
+                    fontFamily: "'Plus Jakarta Sans', sans-serif", 
                     fontWeight: 600, 
                     color: t.text,
                     fontSize: "0.95rem"

@@ -97,7 +97,7 @@ function SectionHeading({ t, isDark, isMobile }: {
         position: "absolute",
         top: isMobile ? -12 : -20,
         left: isMobile ? 16 : 48,
-        fontFamily: "'Outfit', sans-serif",
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
         fontWeight: 900,
         fontSize: isMobile ? "clamp(5rem, 22vw, 9rem)" : "clamp(7rem, 14vw, 13rem)",
         letterSpacing: "-0.06em",
@@ -127,7 +127,7 @@ function SectionHeading({ t, isDark, isMobile }: {
       >
         <Zap size={11} color={isDark ? "rgba(93,232,160,0.9)" : "rgba(22,160,80,0.9)"} strokeWidth={2.5} />
         <span style={{
-          fontFamily: "'DM Mono', monospace",
+          fontFamily: "'Plus Jakarta Sans', monospace",
           fontSize: "0.56rem",
           letterSpacing: "0.2em",
           textTransform: "uppercase",
@@ -145,7 +145,7 @@ function SectionHeading({ t, isDark, isMobile }: {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
       >
         <h2 style={{
-          fontFamily: "'Outfit', sans-serif",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontWeight: 800,
           fontSize: isMobile ? "clamp(2.2rem, 9vw, 3rem)" : "clamp(3rem, 5.5vw, 4.8rem)",
           letterSpacing: "-0.045em",
@@ -185,7 +185,7 @@ function SectionHeading({ t, isDark, isMobile }: {
         }}
       >
         <p style={{
-          fontFamily: "'Outfit', sans-serif",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontWeight: 400,
           fontSize: isMobile ? "0.9rem" : "1.05rem",
           lineHeight: 1.7,
@@ -213,7 +213,7 @@ function SectionHeading({ t, isDark, isMobile }: {
               style={{ display: "flex", flexDirection: "column", gap: 2 }}
             >
               <span style={{
-                fontFamily: "'Outfit', sans-serif",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontWeight: 800,
                 fontSize: isMobile ? "1.4rem" : "1.7rem",
                 letterSpacing: "-0.04em",
@@ -221,7 +221,7 @@ function SectionHeading({ t, isDark, isMobile }: {
                 lineHeight: 1,
               }}>{val}</span>
               <span style={{
-                fontFamily: "'DM Mono', monospace",
+                fontFamily: "'Plus Jakarta Sans', monospace",
                 fontSize: "0.56rem",
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
@@ -273,12 +273,12 @@ function StatPill({ label, value, delay, t, isDark }: {
       }}
     >
       <span style={{
-        fontFamily: "'Outfit', sans-serif", fontWeight: 800,
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
         fontSize: "clamp(0.95rem, 2.5vw, 1.15rem)",
         letterSpacing: "-0.03em", color: t.text, lineHeight: 1,
       }}>{value}</span>
       <span style={{
-        fontFamily: "'Outfit', sans-serif", fontWeight: 400,
+        fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400,
         fontSize: "0.6rem", letterSpacing: "0.06em",
         textTransform: "uppercase", color: t.textFaint, lineHeight: 1,
       }}>{label}</span>
@@ -357,13 +357,13 @@ function FeatureScreenDesktop({ f, active, t, isDark }: {
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                 <span style={{
-                  fontFamily: "'DM Mono', monospace", fontSize: "0.58rem",
+                  fontFamily: "'Plus Jakarta Sans', monospace", fontSize: "0.58rem",
                   letterSpacing: "0.22em", textTransform: "uppercase",
                   color: isDark ? "rgba(93,232,160,0.8)" : "rgba(22,160,80,0.85)",
                 }}>{f.num} — {f.tag}</span>
               </div>
               <h3 style={{
-                fontFamily: "'Outfit', sans-serif", fontWeight: 800,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
                 fontSize: "clamp(2.4rem, 4.5vw, 4rem)",
                 letterSpacing: "-0.045em", lineHeight: 1.0, margin: "0 0 20px", color: t.text,
               }}>
@@ -371,7 +371,7 @@ function FeatureScreenDesktop({ f, active, t, isDark }: {
                 <span style={{ color: t.textMuted }}>{f.headline[1]}</span>
               </h3>
               <p style={{
-                fontFamily: "'Outfit', sans-serif", fontWeight: 400,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400,
                 fontSize: "0.93rem", lineHeight: 1.72, color: t.textMuted, margin: "0 0 28px", maxWidth: 400,
               }}>{f.body}</p>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 28 }}>
@@ -383,7 +383,7 @@ function FeatureScreenDesktop({ f, active, t, isDark }: {
                 style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   padding: "12px 26px", borderRadius: 9999,
-                  fontFamily: "'Outfit', sans-serif", fontWeight: 700,
+                  fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
                   fontSize: "0.88rem", letterSpacing: "0.02em",
                   border: "none", cursor: "pointer", outline: "none", alignSelf: "flex-start",
                   background: isDark ? "#ffffff" : "#0c121c",
@@ -467,13 +467,13 @@ function FeatureScreenMobile({ f, active, t, isDark }: {
             >
               <div style={{ marginBottom: 10 }}>
                 <span style={{
-                  fontFamily: "'DM Mono', monospace", fontSize: "0.54rem",
+                  fontFamily: "'Plus Jakarta Sans', monospace", fontSize: "0.54rem",
                   letterSpacing: "0.22em", textTransform: "uppercase",
                   color: isDark ? "rgba(93,232,160,0.8)" : "rgba(22,160,80,0.85)",
                 }}>{f.num} — {f.tag}</span>
               </div>
               <h3 style={{
-                fontFamily: "'Outfit', sans-serif", fontWeight: 800,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 800,
                 fontSize: "clamp(1.9rem, 8vw, 2.8rem)",
                 letterSpacing: "-0.045em", lineHeight: 1.0, margin: "0 0 12px", color: t.text,
               }}>
@@ -481,7 +481,7 @@ function FeatureScreenMobile({ f, active, t, isDark }: {
                 <span style={{ color: t.textMuted }}>{f.headline[1]}</span>
               </h3>
               <p style={{
-                fontFamily: "'Outfit', sans-serif", fontWeight: 400,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 400,
                 fontSize: "0.82rem", lineHeight: 1.65, color: t.textMuted, margin: "0 0 14px",
               }}>{f.body}</p>
               <div style={{
@@ -496,7 +496,7 @@ function FeatureScreenMobile({ f, active, t, isDark }: {
               <button style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
                 padding: "10px 20px", borderRadius: 9999,
-                fontFamily: "'Outfit', sans-serif", fontWeight: 700,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 700,
                 fontSize: "0.82rem", letterSpacing: "0.02em",
                 border: "none", cursor: "pointer", outline: "none", alignSelf: "flex-start",
                 background: isDark ? "#ffffff" : "#0c121c",
@@ -610,7 +610,7 @@ function Stepper({ features, active, t, isDark, onGo }: {
                 exit={{ opacity: 0, x: -6 }}
                 transition={{ duration: 0.25 }}
                 style={{
-                  fontFamily: "'DM Mono', monospace", fontSize: "0.58rem",
+                  fontFamily: "'Plus Jakarta Sans', monospace", fontSize: "0.58rem",
                   letterSpacing: "0.18em", textTransform: "uppercase",
                   color: t.textMuted, whiteSpace: "nowrap",
                 }}
@@ -644,9 +644,9 @@ function BottomChrome({ active, total, t, isDark, onNext, onPrev, isMobile }: {
         <motion.span
           key={active} initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          style={{ fontFamily: "'DM Mono', monospace", fontSize: isMobile ? "0.82rem" : "0.95rem", fontWeight: 500, color: t.text }}
+          style={{ fontFamily: "'Plus Jakarta Sans', monospace", fontSize: isMobile ? "0.82rem" : "0.95rem", fontWeight: 500, color: t.text }}
         >{String(active + 1).padStart(2, "0")}</motion.span>
-        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", color: t.textFaint }}>
+        <span style={{ fontFamily: "'Plus Jakarta Sans', monospace", fontSize: "0.65rem", color: t.textFaint }}>
           / {String(total).padStart(2, "0")}
         </span>
       </div>
@@ -702,7 +702,7 @@ function TopChrome({ active, t, isDark, onGo, isMobile }: {
       backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
     }}>
       <span style={{
-        fontFamily: "'DM Mono', monospace", fontSize: "0.54rem",
+        fontFamily: "'Plus Jakarta Sans', monospace", fontSize: "0.54rem",
         letterSpacing: "0.22em", textTransform: "uppercase",
         color: isDark ? "rgba(93,232,160,0.75)" : "rgba(22,160,80,0.85)",
         whiteSpace: "nowrap",
@@ -717,7 +717,7 @@ function TopChrome({ active, t, isDark, onGo, isMobile }: {
           <button key={f.id} onClick={() => onGo(i)} style={{
             padding: isMobile ? "4px 10px" : "5px 14px",
             borderRadius: 7, border: "none", cursor: "pointer", outline: "none",
-            fontFamily: "'Outfit', sans-serif", fontWeight: 600,
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600,
             fontSize: isMobile ? "0.67rem" : "0.76rem",
             transition: "background 0.2s, color 0.2s",
             background: i === active
@@ -735,7 +735,7 @@ function TopChrome({ active, t, isDark, onGo, isMobile }: {
             <ArrowRight size={12} color={t.textFaint} />
           </motion.div>
           <span style={{
-            fontFamily: "'Outfit', sans-serif", fontSize: "0.7rem",
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: "0.7rem",
             letterSpacing: "0.06em", textTransform: "uppercase", color: t.textFaint,
           }}>Scroll to explore</span>
         </div>

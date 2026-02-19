@@ -186,7 +186,7 @@ function MobileTabs({
           style={{
             flexShrink: 0, outline: "none", cursor: "pointer",
             padding: "6px 14px", borderRadius: 20,
-            fontFamily: "'Outfit', sans-serif", fontWeight: 600, fontSize: "0.75rem",
+            fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600, fontSize: "0.75rem",
             background: i === active
               ? (isDark ? "rgba(255,255,255,0.10)" : "rgba(0,0,0,0.08)")
               : "transparent",
@@ -291,7 +291,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
       }}>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus Jakarta Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap');
         @keyframes hero-glow-pulse { 0%,100%{ opacity:0.45; } 50%{ opacity:0.85; } }
         .feat-chip {
           display:flex; align-items:center; gap:7px;
@@ -302,7 +302,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
         .know-more-btn {
           display:inline-flex; align-items:center; gap:8px;
           padding:13px 28px; border-radius:9999px;
-          font-family:'Outfit',sans-serif; font-weight:700;
+          font-family:'Plus Jakarta Sans',sans-serif; font-weight:700;
           font-size:0.88rem; letter-spacing:0.02em;
           border:none; cursor:pointer; outline:none;
           text-decoration:none;
@@ -359,7 +359,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
         marginBottom: isMobile ? 32 : 56,
       }}>
         <h1 style={{
-          margin:0, fontFamily:"'Outfit',sans-serif", fontWeight:800,
+          margin:0, fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:800,
           fontSize: isMobile ? "clamp(1.35rem,6vw,1.85rem)" : "clamp(1.38rem,4.5vw,3.2rem)",
           letterSpacing:"-0.04em", lineHeight:1.1,
           color: t.text,
@@ -384,7 +384,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                   width:"100%", textAlign:"left",
                   color: isDark ? "rgba(200,210,225,0.42)" : "rgba(80,95,120,0.45)",
                   fontWeight:800, whiteSpace:"nowrap",
-                  fontFamily:"'Outfit',sans-serif",
+                  fontFamily:"'Plus Jakarta Sans',sans-serif",
                   fontSize: isMobile ? "clamp(1.35rem,6vw,1.85rem)" : "clamp(1.38rem,4.5vw,3.2rem)",
                   letterSpacing:"-0.04em", lineHeight:1.1,
                 }}
@@ -457,7 +457,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
               >
                 <span style={{
                   display:"inline-block", alignSelf:"flex-start",
-                  fontFamily:"'DM Mono',monospace", fontSize:"0.6rem",
+                  fontFamily:"'Plus Jakarta Sans',monospace", fontSize:"0.6rem",
                   letterSpacing:"0.2em", textTransform:"uppercase",
                   color: isDark ? "rgba(93,232,160,0.75)" : "rgba(22,160,80,0.8)",
                   marginBottom:14,
@@ -465,7 +465,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                   {slide.tag}
                 </span>
                 <h2 style={{
-                  fontFamily:"'Outfit',sans-serif", fontWeight:800,
+                  fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:800,
                   fontSize:"clamp(1.5rem,3vw,2.4rem)",
                   letterSpacing:"-0.035em", lineHeight:1.15,
                   color: t.text, margin:"0 0 14px",
@@ -473,7 +473,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                   {slide.heading}
                 </h2>
                 <p style={{
-                  fontFamily:"'Outfit',sans-serif", fontWeight:400,
+                  fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:400,
                   fontSize:"0.95rem", lineHeight:1.72,
                   color: t.textMuted, margin:"0 0 28px", maxWidth:480,
                 }}>
@@ -498,7 +498,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                         }}>
                           <Icon size={13} color={t.textMuted} strokeWidth={1.8}/>
                         </div>
-                        <span style={{ fontFamily:"'Outfit',sans-serif", fontWeight:600, fontSize:"0.78rem", color:t.textMuted }}>
+                        <span style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:600, fontSize:"0.78rem", color:t.textMuted }}>
                           {f.label}
                         </span>
                       </div>
@@ -553,7 +553,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
             >
               <span style={{
                 display:"inline-block", alignSelf:"flex-start",
-                fontFamily:"'DM Mono',monospace", fontSize:"0.6rem",
+                fontFamily:"'Plus Jakarta Sans',monospace", fontSize:"0.6rem",
                 letterSpacing:"0.2em", textTransform:"uppercase",
                 color: isDark ? "rgba(93,232,160,0.75)" : "rgba(22,160,80,0.8)",
                 marginBottom:12,
@@ -561,7 +561,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                 {slide.tag}
               </span>
               <h2 style={{
-                fontFamily:"'Outfit',sans-serif", fontWeight:800,
+                fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:800,
                 fontSize:"clamp(1.4rem,5.5vw,1.85rem)",
                 letterSpacing:"-0.035em", lineHeight:1.15,
                 color: t.text, margin:"0 0 10px",
@@ -569,7 +569,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                 {slide.heading}
               </h2>
               <p style={{
-                fontFamily:"'Outfit',sans-serif", fontWeight:400,
+                fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:400,
                 fontSize:"0.9rem", lineHeight:1.72,
                 color: t.textMuted, margin:"0 0 20px",
               }}>
@@ -593,7 +593,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                         <Icon size={12} color={t.textMuted} strokeWidth={1.8}/>
                       </div>
                       <span style={{
-                        fontFamily:"'Outfit',sans-serif", fontWeight:600,
+                        fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:600,
                         fontSize:"0.75rem", color:t.textMuted,
                       }}>
                         {f.label}

@@ -61,12 +61,12 @@ export default function Header({ onContactClick }: HeaderProps) {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus Jakarta Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
 
         /* --- RESTORED ORIGINAL NAV STYLES --- */
         .nav-link {
           position: relative;
-          font-family: 'DM Mono', monospace;
+          font-family: 'Plus Jakarta Sans', monospace;
           font-size: 0.75rem;
           letter-spacing: 0.12em;
           text-transform: uppercase;
@@ -91,7 +91,7 @@ export default function Header({ onContactClick }: HeaderProps) {
 
         .contact-btn {
           position: relative; overflow: hidden;
-          font-family: 'Outfit', sans-serif; font-weight: 700;
+          font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
           font-size: 0.8rem; letter-spacing: 0.03em;
           border-radius: 9999px; padding: 10px 24px;
           cursor: pointer; outline: none; border: none;
@@ -187,7 +187,7 @@ export default function Header({ onContactClick }: HeaderProps) {
             style={{ textDecoration: 'none', display: "flex", alignItems: "center" }}
           >
             <span style={{
-              fontFamily: "'Outfit', sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 800, fontSize: "1.5rem",
               letterSpacing: "-0.04em",
               color: t.text, // Dynamic Black/White
@@ -249,10 +249,10 @@ export default function Header({ onContactClick }: HeaderProps) {
                               <Icon size={18} strokeWidth={2} />
                             </div>
                             <div>
-                              <div style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 600, fontSize: "0.9rem", color: t.text, marginBottom: 2 }}>
+                              <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 600, fontSize: "0.9rem", color: t.text, marginBottom: 2 }}>
                                 {p.label}
                               </div>
-                              <div style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.05em", color: t.textMuted }}>
+                              <div style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.05em", color: t.textMuted }}>
                                 {p.desc}
                               </div>
                             </div>
@@ -361,7 +361,7 @@ export default function Header({ onContactClick }: HeaderProps) {
                     padding: "12px 0", background: "none", border: "none", cursor: "pointer", width: "100%",
                   }}
                 >
-                  <span style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted }}>
+                  <span style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted }}>
                     Products
                   </span>
                   <motion.span animate={{ rotate: mobileProducts ? 180 : 0 }} transition={{ duration: 0.2 }}>
@@ -387,7 +387,7 @@ export default function Header({ onContactClick }: HeaderProps) {
                             style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 0", textDecoration: "none", color: t.text }}
                           >
                             <Icon size={16} color={p.color} />
-                            <span style={{ fontFamily: "'Outfit',sans-serif", fontWeight: 600, fontSize: "0.9rem" }}>{p.label}</span>
+                            <span style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 600, fontSize: "0.9rem" }}>{p.label}</span>
                           </Link>
                         );
                       })}
@@ -397,14 +397,14 @@ export default function Header({ onContactClick }: HeaderProps) {
 
                 <div style={{ height: 1, background: t.border, margin: "6px 0" }}/>
 
-                <Link to="/about" onClick={() => setMobileOpen(false)} style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted, textDecoration: "none", padding: "12px 0", display: "block" }}>About</Link>
-                <Link to="/contact" onClick={() => setMobileOpen(false)} style={{ fontFamily: "'DM Mono',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted, textDecoration: "none", padding: "12px 0", display: "block" }}>Contact</Link>
+                <Link to="/about" onClick={() => setMobileOpen(false)} style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted, textDecoration: "none", padding: "12px 0", display: "block" }}>About</Link>
+                <Link to="/contact" onClick={() => setMobileOpen(false)} style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted, textDecoration: "none", padding: "12px 0", display: "block" }}>Contact</Link>
 
                 <button
                   onClick={() => { onContactClick(); setMobileOpen(false); }}
                   style={{
                     marginTop: 12, padding: "14px", borderRadius: 9999,
-                    fontFamily: "'Outfit',sans-serif", fontWeight: 700, fontSize: "0.9rem",
+                    fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 700, fontSize: "0.9rem",
                     background: isDark ? "#ffffff" : "#0c121c",
                     color:      isDark ? "#0c121c" : "#ffffff",
                     border: "none", cursor: "pointer", width: "100%"

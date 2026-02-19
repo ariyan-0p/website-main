@@ -37,9 +37,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
             }}
           >
             <style>{`
-              @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
-              .cm-input { width:100%; box-sizing:border-box; border-radius:10px; padding:12px 16px; font-family:'Outfit',sans-serif; font-size:0.88rem; outline:none; transition:border-color 0.2s ease,box-shadow 0.2s ease; }
-              .cm-label { display:block; font-family:'DM Mono',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:8px; }
+              @import url('https://fonts.googleapis.com/css2?family=Plus Jakarta Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+              .cm-input { width:100%; box-sizing:border-box; border-radius:10px; padding:12px 16px; font-family:'Plus Jakarta Sans',sans-serif; font-size:0.88rem; outline:none; transition:border-color 0.2s ease,box-shadow 0.2s ease; }
+              .cm-label { display:block; font-family:'Plus Jakarta Sans',monospace; font-size:0.62rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:8px; }
               .cm-contact-row { display:flex; align-items:center; gap:14px; padding:12px 14px; border-radius:12px; text-decoration:none; transition:background 0.2s ease; }
               .cm-icon-box { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform 0.2s ease; }
               .cm-contact-row:hover .cm-icon-box { transform:scale(1.07); }
@@ -66,9 +66,9 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
               <div style={{ position:"absolute",top:-60,right:-60,width:220,height:220,borderRadius:"50%",pointerEvents:"none",
                 background:"radial-gradient(circle,rgba(99,150,255,0.07) 0%,transparent 70%)" }}/>
               <div style={{ position:"relative",zIndex:1 }}>
-                <span style={{ display:"block",fontFamily:"'DM Mono',monospace",fontSize:"0.62rem",letterSpacing:"0.18em",textTransform:"uppercase",color:t.textFaint,marginBottom:12 }}>RenoBill</span>
-                <h3 style={{ fontFamily:"'Outfit',sans-serif",fontWeight:800,fontSize:"1.65rem",letterSpacing:"-0.04em",color:t.text,margin:"0 0 10px",lineHeight:1.15 }}>Get in touch</h3>
-                <p style={{ fontFamily:"'Outfit',sans-serif",fontSize:"0.82rem",color:t.textMuted,margin:"0 0 36px",lineHeight:1.65 }}>
+                <span style={{ display:"block",fontFamily:"'Plus Jakarta Sans',monospace",fontSize:"0.62rem",letterSpacing:"0.18em",textTransform:"uppercase",color:t.textFaint,marginBottom:12 }}>RenoBill</span>
+                <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif",fontWeight:800,fontSize:"1.65rem",letterSpacing:"-0.04em",color:t.text,margin:"0 0 10px",lineHeight:1.15 }}>Get in touch</h3>
+                <p style={{ fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:"0.82rem",color:t.textMuted,margin:"0 0 36px",lineHeight:1.65 }}>
                   Ready to modernise your restaurant? We'll set up a free demo — just reach out.
                 </p>
                 <div style={{ display:"flex",flexDirection:"column",gap:4 }}>
@@ -87,21 +87,21 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                         <Icon size={16} color={t.textMuted}/>
                       </div>
                       <div>
-                        <p style={{ fontFamily:"'DM Mono',monospace",fontSize:"0.58rem",letterSpacing:"0.14em",textTransform:"uppercase",color:t.textFaint,margin:"0 0 2px" }}>{label}</p>
-                        <p style={{ fontFamily:"'Outfit',sans-serif",fontWeight:600,fontSize:"0.83rem",color:t.textMuted,margin:0 }}>{value}</p>
+                        <p style={{ fontFamily:"'Plus Jakarta Sans',monospace",fontSize:"0.58rem",letterSpacing:"0.14em",textTransform:"uppercase",color:t.textFaint,margin:"0 0 2px" }}>{label}</p>
+                        <p style={{ fontFamily:"'Plus Jakarta Sans',sans-serif",fontWeight:600,fontSize:"0.83rem",color:t.textMuted,margin:0 }}>{value}</p>
                       </div>
                     </a>
                   ))}
                 </div>
               </div>
-              <p style={{ fontFamily:"'DM Mono',monospace",fontSize:"0.6rem",letterSpacing:"0.1em",color:t.textFaint,margin:0,paddingTop:24,position:"relative",zIndex:1 }}>
+              <p style={{ fontFamily:"'Plus Jakarta Sans',monospace",fontSize:"0.6rem",letterSpacing:"0.1em",color:t.textFaint,margin:0,paddingTop:24,position:"relative",zIndex:1 }}>
                 © {new Date().getFullYear()} RenoBill
               </p>
             </div>
 
             {/* RIGHT — Form */}
             <div style={{ flex:1,padding:"40px 36px" }}>
-              <h4 style={{ fontFamily:"'Outfit',sans-serif",fontWeight:700,fontSize:"1.05rem",letterSpacing:"-0.025em",color:t.text,margin:"0 0 28px" }}>
+              <h4 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif",fontWeight:700,fontSize:"1.05rem",letterSpacing:"-0.025em",color:t.text,margin:"0 0 28px" }}>
                 Send us a message
               </h4>
               <form style={{ display:"flex",flexDirection:"column",gap:18 }} onSubmit={(e)=>e.preventDefault()}>
@@ -141,7 +141,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                 </div>
                 <button type="submit" style={{
                   width:"100%",padding:"14px 0",borderRadius:9999,
-                  fontFamily:"'Outfit',sans-serif",fontWeight:700,fontSize:"0.9rem",letterSpacing:"0.02em",
+                  fontFamily:"'Plus Jakarta Sans',sans-serif",fontWeight:700,fontSize:"0.9rem",letterSpacing:"0.02em",
                   color:      isDark?"#050505":"#ffffff",
                   background: isDark?"#ffffff":"#0c121c",
                   border:"none",cursor:"pointer",outline:"none",
