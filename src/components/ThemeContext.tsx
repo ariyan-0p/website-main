@@ -25,9 +25,9 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      return (localStorage.getItem("renobill-theme") as Theme) || "dark";
+      return (localStorage.getItem("renobill-theme") as Theme) || "light"; // ← default: light
     }
-    return "dark";
+    return "light"; // ← default: light
   });
 
   useEffect(() => {
@@ -38,7 +38,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const toggleTheme = () => setTheme((p) => (p === "dark" ? "light" : "dark"));
   const isDark = theme === "dark";
 
-  // All colour tokens in one place
   const t = isDark ? {
     bg:           "#060608",
     bgSecondary:  "#0b0c10",
@@ -49,7 +48,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     text:         "rgba(228,238,255,0.95)",
     textMuted:    "rgba(165,185,215,0.55)",
     textFaint:    "rgba(145,165,200,0.35)",
-    headerBg:     "rgba(6,6,8,",      // append opacity + ")"
+    headerBg:     "rgba(6,6,8,",
   } : {
     bg:           "#ffffff",
     bgSecondary:  "#f5f6f8",
