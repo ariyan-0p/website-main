@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
-import { ArrowRight, Zap, BarChart2, ShieldCheck, Clock } from "lucide-react";
+import { ArrowRight, Zap, BarChart2, ShieldCheck, Clock, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTheme } from "./ThemeContext";
 
 import dashboardImg  from "../assets/dashboard-monitor.png";
@@ -29,6 +29,7 @@ const slides = [
       { icon: Clock,       label: "24/7 uptime"   },
     ],
     tag: "Dashboard", link: "/product/dashboard",
+    price: "Starting from ₹19,990",
   },
   {
     image: analyticsImg, label: "Analytics",
@@ -41,6 +42,7 @@ const slides = [
       { icon: Clock,       label: "Date filters"  },
     ],
     tag: "Analytics", link: "/product/analytics",
+    price: "Starting from ₹19,990",
   },
   {
     image: kioskImg, label: "Kiosk",
@@ -53,6 +55,7 @@ const slides = [
       { icon: BarChart2,   label: "Order history" },
     ],
     tag: "Kiosk", link: "/product/kiosk",
+    price: "Starting from ₹19,990",
   },
   {
     image: billingImg, label: "Billing",
@@ -65,6 +68,7 @@ const slides = [
       { icon: Clock,       label: "KOT printing"  },
     ],
     tag: "POS", link: "/product/pos",
+    price: "Starting from ₹19,990",
   },
   {
     image: mobileImg, label: "Mobile App",
@@ -77,6 +81,7 @@ const slides = [
       { icon: BarChart2,   label: "Staff control" },
     ],
     tag: "Mobile", link: "/product/mobile",
+    price: "Starting from ₹19,990",
   },
 ];
 
@@ -120,14 +125,13 @@ function MobileCard({
             filter: `drop-shadow(0 24px 48px rgba(0,0,0,${isDark ? 0.55 : 0.15}))`,
           }}
         >
-          <Link to={slides[active].link} style={{ display: "block" }}>
-            <img
-              src={slides[active].image}
-              alt={slides[active].label}
-              draggable={false}
-              style={{ width: "100%", display: "block", borderRadius: 10, userSelect: "none" }}
-            />
-          </Link>
+          {/* c) mobile: image click just changes active, no navigation */}
+          <img
+            src={slides[active].image}
+            alt={slides[active].label}
+            draggable={false}
+            style={{ width: "100%", display: "block", borderRadius: 10, userSelect: "none" }}
+          />
         </motion.div>
       </AnimatePresence>
 
@@ -210,11 +214,13 @@ export default function Hero({ onOpenModal }: HeroProps) {
   const [active,      setActive]      = useState(0);
   const [accentIndex, setAccentIndex] = useState(0);
   const [isMobile,    setIsMobile]    = useState(false);
+  // g) hover state for carousel area to show nav arrows
+  const [carouselHovered, setCarouselHovered] = useState(false);
 
   const carouselTimer = useRef<ReturnType<typeof setInterval> | null>(null);
   const textTimer     = useRef<ReturnType<typeof setInterval> | null>(null);
-  const heroRef       = useRef<HTMLDivElement>(null);       // ← CHANGE 1: added ref
-  const isVisible     = useRef(true);                       // ← CHANGE 2: visibility flag
+  const heroRef       = useRef<HTMLDivElement>(null);
+  const isVisible     = useRef(true);
 
   // ── breakpoint detection ────────────────────────────────────
   useEffect(() => {
@@ -233,7 +239,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
     return () => { if (textTimer.current) clearInterval(textTimer.current); };
   }, []);
 
-  // ── CHANGE 3: pause carousel when hero scrolled out of view ──
+  // ── pause carousel when hero scrolled out of view ──
   useEffect(() => {
     if (!heroRef.current) return;
     const observer = new IntersectionObserver(
@@ -248,7 +254,6 @@ export default function Hero({ onOpenModal }: HeroProps) {
   const startCarousel = useCallback(() => {
     if (carouselTimer.current) clearInterval(carouselTimer.current);
     carouselTimer.current = setInterval(() => {
-      // Only update state when hero is visible — prevents scroll-jump
       if (isVisible.current) {
         setActive((p) => (p + 1) % slides.length);
       }
@@ -265,21 +270,34 @@ export default function Hero({ onOpenModal }: HeroProps) {
     startCarousel();
   }, [startCarousel]);
 
+  // b) clicking a non-active carousel image sets it as active (no navigation)
+  const handleCarouselImageClick = useCallback((index: number) => {
+    handleSetActive(index);
+  }, [handleSetActive]);
+
+  const handlePrev = useCallback(() => {
+    handleSetActive((active - 1 + slides.length) % slides.length);
+  }, [active, handleSetActive]);
+
+  const handleNext = useCallback(() => {
+    handleSetActive((active + 1) % slides.length);
+  }, [active, handleSetActive]);
+
   const slide = slides[active];
 
-  // ── YOUR EXACT original carousel position logic ─────────────
+  // ── carousel position logic ─────────────────────────────────
   const getCarouselItemStyle = (index: number) => {
     const total = slides.length;
     const diff  = (index - active + total) % total;
-    if (diff === 0)         return { x: 140, y: 0,  scale: 1,    opacity: 1,   zIndex: 50, blur: 0, pointerEvents: "auto"  };
-    if (diff === total - 1) return { x: -60, y: 30, scale: 0.75, opacity: 0.6, zIndex: 35, blur: 4, pointerEvents: "none"  };
-    if (diff === total - 2) return { x: -200, y: 50, scale: 0.62, opacity: 0.4, zIndex: 25, blur: 6, pointerEvents: "none" };
-    return                         { x: -300, y: 80, scale: 0.3,  opacity: 0,   zIndex: 5,  blur: 8, pointerEvents: "none" };
+    if (diff === 0)         return { x: 140, y: 0,  scale: 1,    opacity: 1,   zIndex: 50, pointerEvents: "auto"  };
+    if (diff === total - 1) return { x: -60, y: 30, scale: 0.75, opacity: 0.6, zIndex: 35, pointerEvents: "auto"  };
+    if (diff === total - 2) return { x: -200, y: 50, scale: 0.62, opacity: 0.4, zIndex: 25, pointerEvents: "auto" };
+    return                         { x: -300, y: 80, scale: 0.3,  opacity: 0,   zIndex: 5,  pointerEvents: "none" };
   };
 
   return (
     <div
-      ref={heroRef}   // ← attached here
+      ref={heroRef}
       style={{
         position: "relative", width: "100%", minHeight: "100vh",
         display: "flex", flexDirection: "column",
@@ -310,10 +328,18 @@ export default function Hero({ onOpenModal }: HeroProps) {
         }
         .know-more-btn:hover  { opacity:0.88; }
         .know-more-btn:active { transform:scale(0.97); }
+        .carousel-nav-btn {
+          display:flex; align-items:center; justify-content:center;
+          width:38px; height:38px; border-radius:50%;
+          border:none; cursor:pointer; outline:none;
+          transition:opacity 0.2s ease, transform 0.15s ease, background 0.2s ease;
+        }
+        .carousel-nav-btn:hover { transform:scale(1.1); }
+        .carousel-nav-btn:active { transform:scale(0.95); }
         ::-webkit-scrollbar { display:none; }
       `}</style>
 
-      {/* ── YOUR EXACT background ─────────────────────────────── */}
+      {/* ── background ─────────────────────────────── */}
       {isDark && (
         <>
           <svg style={{ position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",opacity:0.035,zIndex:1 }} aria-hidden>
@@ -350,7 +376,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
         }}/>
       )}
 
-      {/* ── YOUR EXACT headline ───────────────────────────────── */}
+      {/* ── headline ───────────────────────────────── */}
       <div style={{
         position:"relative", zIndex:10, width:"100%",
         display:"flex", flexDirection:"column", alignItems:"center",
@@ -397,7 +423,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
       </div>
 
       {/* ════════════════════════════════════════════════════════
-          DESKTOP — YOUR EXACT ORIGINAL, untouched
+          DESKTOP
       ════════════════════════════════════════════════════════ */}
       {!isMobile && (
         <motion.div
@@ -413,7 +439,14 @@ export default function Hero({ onOpenModal }: HeroProps) {
         >
           {/* LEFT: carousel */}
           <div style={{ flex:"0 0 580px", display:"flex", flexDirection:"column", alignItems:"center" }}>
-            <div style={{ position:"relative", width:"100%", height:420, display:"flex", alignItems:"center", justifyContent:"center" }}>
+            <div
+              onMouseEnter={() => setCarouselHovered(true)}
+              onMouseLeave={() => setCarouselHovered(false)}
+              style={{
+                position:"relative", width:"100%", height:420,
+                display:"flex", alignItems:"center", justifyContent:"center",
+              }}
+            >
               {slides.map((s, index) => {
                 const style    = getCarouselItemStyle(index);
                 const isActive = index === active;
@@ -425,22 +458,72 @@ export default function Hero({ onOpenModal }: HeroProps) {
                     style={{
                       position:"absolute", width:340,
                       zIndex: style.zIndex,
-                      filter:`blur(${style.blur}px) drop-shadow(0 ${isActive ? 32 : 16}px ${isActive ? 64 : 32}px rgba(0,0,0,${isActive ? 0.5 : 0.25}))`,
+                      // a) NO blur on images
+                      filter:`drop-shadow(0 ${isActive ? 32 : 16}px ${isActive ? 64 : 32}px rgba(0,0,0,${isActive ? 0.5 : 0.25}))`,
                       pointerEvents: style.pointerEvents as any,
+                      // b+c) all images are clickable but only to set active, not navigate
+                      cursor: isActive ? "default" : "pointer",
                     }}
+                    onClick={() => !isActive && handleCarouselImageClick(index)}
                   >
-                    {isActive ? (
-                      <Link to={s.link} className="hero-img-link" style={{ display:"block" }}>
-                        <img src={s.image} alt={s.label} draggable={false}
-                          style={{ width:"100%", display:"block", userSelect:"none", borderRadius:8 }}/>
-                      </Link>
-                    ) : (
-                      <img src={s.image} alt={s.label} draggable={false}
-                        style={{ width:"100%", display:"block", userSelect:"none", borderRadius:8 }}/>
-                    )}
+                    {/* c) No Link wrapper on images — clicking just sets active */}
+                    <img
+                      src={s.image}
+                      alt={s.label}
+                      draggable={false}
+                      style={{ width:"100%", display:"block", userSelect:"none", borderRadius:8 }}
+                    />
                   </motion.div>
                 );
               })}
+
+              {/* f) Navigation arrows — only visible on carousel hover */}
+              <AnimatePresence>
+                {carouselHovered && (
+                  <>
+                    <motion.button
+                      initial={{ opacity: 0, x: -6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -6 }}
+                      transition={{ duration: 0.18 }}
+                      className="carousel-nav-btn"
+                      onClick={handlePrev}
+                      style={{
+                        position: "absolute", left: 14, top: "50%",
+                        transform: "translateY(-50%)",
+                        zIndex: 100,
+                        background: isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        border: `1px solid ${isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                      }}
+                    >
+                      <ChevronLeft size={18} color={isDark ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.7)"} strokeWidth={2.2} />
+                    </motion.button>
+                    <motion.button
+                      initial={{ opacity: 0, x: 6 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: 6 }}
+                      transition={{ duration: 0.18 }}
+                      className="carousel-nav-btn"
+                      onClick={handleNext}
+                      style={{
+                        position: "absolute", right: 14, top: "50%",
+                        transform: "translateY(-50%)",
+                        zIndex: 100,
+                        background: isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        border: `1px solid ${isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.12)"}`,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                      }}
+                    >
+                      <ChevronRight size={18} color={isDark ? "rgba(255,255,255,0.8)" : "rgba(0,0,0,0.7)"} strokeWidth={2.2} />
+                    </motion.button>
+                  </>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -455,15 +538,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
                 transition={{ duration:0.44, ease:[0.22,1,0.36,1] }}
                 style={{ display:"flex", flexDirection:"column" }}
               >
-                <span style={{
-                  display:"inline-block", alignSelf:"flex-start",
-                  fontFamily:"'Plus Jakarta Sans',monospace", fontSize:"0.6rem",
-                  letterSpacing:"0.2em", textTransform:"uppercase",
-                  color: isDark ? "rgba(93,232,160,0.75)" : "rgba(22,160,80,0.8)",
-                  marginBottom:14,
-                }}>
-                  {slide.tag}
-                </span>
+                {/* d) Removed green tag label */}
                 <h2 style={{
                   fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:800,
                   fontSize:"clamp(1.5rem,3vw,2.4rem)",
@@ -505,6 +580,19 @@ export default function Hero({ onOpenModal }: HeroProps) {
                     );
                   })}
                 </div>
+
+                {/* e) Price label above Know More button */}
+                <span style={{
+                  display:"inline-block", alignSelf:"flex-start",
+                  fontFamily:"'Plus Jakarta Sans',sans-serif",
+                  fontSize:"0.78rem", fontWeight:600,
+                  color: t.textMuted,
+                  marginBottom:10,
+                  letterSpacing:"0.01em",
+                }}>
+                  {slide.price}
+                </span>
+
                 <Link
                   to={slide.link}
                   className="know-more-btn"
@@ -551,15 +639,7 @@ export default function Hero({ onOpenModal }: HeroProps) {
               transition={{ duration:0.38, ease:[0.22,1,0.36,1] }}
               style={{ display:"flex", flexDirection:"column" }}
             >
-              <span style={{
-                display:"inline-block", alignSelf:"flex-start",
-                fontFamily:"'Plus Jakarta Sans',monospace", fontSize:"0.6rem",
-                letterSpacing:"0.2em", textTransform:"uppercase",
-                color: isDark ? "rgba(93,232,160,0.75)" : "rgba(22,160,80,0.8)",
-                marginBottom:12,
-              }}>
-                {slide.tag}
-              </span>
+              {/* d) Removed green tag label on mobile too */}
               <h2 style={{
                 fontFamily:"'Plus Jakarta Sans',sans-serif", fontWeight:800,
                 fontSize:"clamp(1.4rem,5.5vw,1.85rem)",
@@ -602,6 +682,19 @@ export default function Hero({ onOpenModal }: HeroProps) {
                   );
                 })}
               </div>
+
+              {/* e) Price label above Know More button — mobile */}
+              <span style={{
+                display:"inline-block", alignSelf:"flex-start",
+                fontFamily:"'Plus Jakarta Sans',sans-serif",
+                fontSize:"0.75rem", fontWeight:600,
+                color: t.textMuted,
+                marginBottom:10,
+                letterSpacing:"0.01em",
+              }}>
+                {slide.price}
+              </span>
+
               <Link
                 to={slide.link}
                 className="know-more-btn"

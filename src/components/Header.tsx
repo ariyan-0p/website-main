@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom"; 
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Menu, X, Sun, Moon, ChevronDown, 
-  Zap, Tablet, BarChart2, Smartphone, Monitor 
+import {
+  Menu, X, Sun, Moon, ChevronDown,
+  Zap, Tablet, BarChart2, Smartphone, Monitor
 } from "lucide-react";
 import { useTheme } from "./ThemeContext";
 
@@ -11,361 +11,407 @@ interface HeaderProps {
   onContactClick: () => void;
 }
 
-// --- DROPDOWN DATA ---
 const PRODUCTS = [
-  { icon: Zap, label: "Billing / POS", desc: "Fast, cloud-based billing", path: "/product/pos", color: "#f59e0b" },
-  { icon: Tablet, label: "Kiosk", desc: "Self-order experience", path: "/product/kiosk", color: "#10b981" },
-  { icon: BarChart2, label: "Analytics", desc: "Real-time insights", path: "/product/analytics", color: "#a855f7" },
-  { icon: Smartphone, label: "Mobile App", desc: "Manage from anywhere", path: "/product/mobile", color: "#3b82f6" },
-  { icon: Monitor, label: "Dashboard", desc: "Central command center", path: "/product/dashboard", color: "#64748b" }
+  { icon: Zap,        label: "Billing / POS", desc: "Fast, cloud-based billing",   path: "/product/pos",       color: "#f59e0b" },
+  { icon: Tablet,     label: "Kiosk",         desc: "Self-order experience",        path: "/product/kiosk",     color: "#10b981" },
+  { icon: BarChart2,  label: "Analytics",     desc: "Real-time insights",           path: "/product/analytics", color: "#a855f7" },
+  { icon: Smartphone, label: "Mobile App",    desc: "Manage from anywhere",         path: "/product/mobile",    color: "#3b82f6" },
+  { icon: Monitor,    label: "Dashboard",     desc: "Central command center",       path: "/product/dashboard", color: "#64748b" },
 ];
 
 export default function Header({ onContactClick }: HeaderProps) {
   const { isDark, toggleTheme, t } = useTheme();
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [productOpen, setProductOpen] = useState(false);
+  const [scrolled,       setScrolled]       = useState(false);
+  const [mobileOpen,     setMobileOpen]     = useState(false);
+  const [productOpen,    setProductOpen]    = useState(false);
   const [mobileProducts, setMobileProducts] = useState(true);
-  
-  const dropRef = useRef<HTMLDivElement>(null);
+
+  const dropRef  = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (dropRef.current && !dropRef.current.contains(e.target as Node)) {
+      if (dropRef.current && !dropRef.current.contains(e.target as Node))
         setProductOpen(false);
-      }
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Close menus on route change
   useEffect(() => {
     setMobileOpen(false);
     setProductOpen(false);
   }, [location]);
 
-  // Original Transparency Logic
-  const headerBg = scrolled
-    ? `${t.headerBg}0.94)`
-    : `${t.headerBg}0.55)`;
+  // ── Colours that respond to scroll + theme ──────────────────
+  const navBg = scrolled
+    ? isDark
+      ? "rgba(10,10,14,0.88)"
+      : "rgba(255,255,255,0.88)"
+    : "transparent";
+
+  const navBorder = scrolled
+    ? isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)"
+    : "transparent";                    // c) no border when at top
+
+  const logoColor  = isDark ? "#ffffff" : "#0c121c";
+  const linkColor  = isDark ? "rgba(255,255,255,0.55)" : "rgba(15,23,42,0.5)";
+  const linkHover  = isDark ? "#ffffff" : "#0c121c";
+  const ctaBg      = isDark ? "#ffffff" : "#0c121c";
+  const ctaText    = isDark ? "#0c121c" : "#ffffff";
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus Jakarta Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 
-        /* --- RESTORED ORIGINAL NAV STYLES --- */
+        /* ── Nav link — subtle underline slide ───────────────── */
         .nav-link {
           position: relative;
-          font-family: 'Plus Jakarta Sans', monospace;
-          font-size: 0.75rem;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 0.8rem;
+          font-weight: 500;
+          letter-spacing: 0.01em;
           text-decoration: none;
-          padding-bottom: 4px;
+          padding-bottom: 2px;
           transition: color 0.22s ease;
-          display: flex; align-items: center; gap: 6px;
-          background: none; border: none; cursor: pointer;
-          outline: none;
+          display: flex; align-items: center; gap: 5px;
+          background: none; border: none; cursor: pointer; outline: none;
         }
-        /* The specific underline animation you liked */
         .nav-link::after {
           content: '';
-          position: absolute; bottom: 0px; left: 0;
-          width: 0%; height: 1px;
+          position: absolute; bottom: 0; left: 0;
+          width: 0%; height: 1.5px;
           background: currentColor;
+          border-radius: 2px;
           transition: width 0.3s cubic-bezier(0.22,1,0.36,1);
         }
-        .nav-link:hover::after {
-          width: 100%;
-        }
+        .nav-link:hover::after { width: 100%; }
 
-        .contact-btn {
-          position: relative; overflow: hidden;
-          font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700;
-          font-size: 0.8rem; letter-spacing: 0.03em;
-          border-radius: 9999px; padding: 10px 24px;
+        /* ── CTA button ──────────────────────────────────────── */
+        .cta-btn {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-weight: 700;
+          font-size: 0.8rem;
+          letter-spacing: 0.02em;
+          border-radius: 9999px;
+          padding: 10px 22px;
           cursor: pointer; outline: none; border: none;
-          transition: opacity 0.2s ease, transform 0.15s ease;
+          transition: opacity 0.18s ease, transform 0.14s ease;
+          white-space: nowrap;
         }
-        .contact-btn:hover { opacity: 0.88; }
-        .contact-btn:active { transform: scale(0.96); }
+        .cta-btn:hover  { opacity: 0.85; }
+        .cta-btn:active { transform: scale(0.96); }
 
-        .hamburger-btn {
-          display: flex; align-items: center; justify-content: center;
-          width: 36px; height: 36px; border-radius: 8px;
-          cursor: pointer; outline: none;
-          transition: background 0.2s ease;
-        }
-
-        /* --- NEW COOL DROPDOWN STYLE (Matches reference) --- */
-        .cool-dropdown {
-          position: absolute; top: calc(100% + 15px); left: 50%;
-          transform: translateX(-50%);
-          width: 320px; 
-          border-radius: 16px; 
-          overflow: hidden;
-          backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-          z-index: 200;
-          padding: 8px;
-          box-shadow: 0 20px 50px -12px rgba(0,0,0,0.5);
-        }
-        .cool-item {
-          display: flex; align-items: flex-start; gap: 14px;
-          padding: 12px 14px;
-          text-decoration: none;
-          transition: background 0.2s ease;
-          border-radius: 12px;
-          cursor: pointer;
-        }
-        /* Hover effect for items */
-        .cool-item:hover {
-          background: rgba(255,255,255,0.08); 
-        }
-        /* Light mode hover adjustment handled in inline styles below */
-
-        /* --- THEME TOGGLE SWITCH --- */
+        /* ── Theme toggle ────────────────────────────────────── */
         .theme-switch {
-          width: 50px; height: 28px;
-          border-radius: 99px;
-          display: flex; align-items: center;
-          padding: 2px;
-          cursor: pointer;
-          border: 1px solid;
+          width: 46px; height: 26px; border-radius: 99px;
+          display: flex; align-items: center; padding: 2px;
+          cursor: pointer; border: 1px solid;
           transition: background 0.3s ease, border-color 0.3s ease;
-          position: relative;
         }
         .switch-knob {
-          width: 22px; height: 22px;
-          border-radius: 50%;
+          width: 20px; height: 20px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+          box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+          transition: margin 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+
+        /* ── Dropdown ────────────────────────────────────────── */
+        .prod-dropdown {
+          position: absolute; top: calc(100% + 14px); left: 50%;
+          transform: translateX(-50%);
+          width: 300px;
+          border-radius: 18px;
+          overflow: hidden;
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+          z-index: 300;
+          padding: 6px;
+        }
+        .prod-item {
+          display: flex; align-items: center; gap: 12px;
+          padding: 11px 12px; border-radius: 12px;
+          text-decoration: none;
+          transition: background 0.15s ease;
+          cursor: pointer;
+        }
+
+        /* ── Hamburger ───────────────────────────────────────── */
+        .ham-btn {
+          display: flex; align-items: center; justify-content: center;
+          width: 34px; height: 34px; border-radius: 9px;
+          cursor: pointer; outline: none;
+          transition: background 0.2s ease;
         }
       `}</style>
 
       <motion.header
         initial={{ y: -60, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        animate={{ y: 0,   opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-          background: headerBg,
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderBottom: `1px solid ${scrolled ? t.borderStrong : t.border}`,
-          transition: "background 0.4s ease, border-color 0.4s ease",
-          height: 70
+          // c) No border at top — completely transparent over hero
+          background:     navBg,
+          backdropFilter: scrolled ? "blur(20px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
+          borderBottom:   `1px solid ${navBorder}`,
+          transition:     "background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease",
+          height: 70,
         }}
       >
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: 1,
-          background: isDark
-            ? "linear-gradient(90deg,transparent,rgba(255,255,255,0.1) 30%,rgba(255,255,255,0.05) 70%,transparent)"
-            : "linear-gradient(90deg,transparent,rgba(0,0,0,0.06) 30%,rgba(0,0,0,0.03) 70%,transparent)",
-          pointerEvents: "none",
-        }}/>
-
         <nav style={{
-          maxWidth: 1280, margin: "0 auto", padding: "0 24px",
-          height: "100%", display: "flex", alignItems: "center",
+          maxWidth: 1280, margin: "0 auto",
+          padding: "0 32px",
+          height: "100%",
+          display: "flex", alignItems: "center",
           justifyContent: "space-between",
+          gap: 24,
         }}>
 
-          {/* ── LOGO (Clean Text Only) ── */}
-          <Link 
-            to="/" 
+          {/* ── LOGO ───────────────────────────────────────────── */}
+          <Link
+            to="/"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            style={{ textDecoration: 'none', display: "flex", alignItems: "center" }}
+            style={{ textDecoration: "none", flexShrink: 0 }}
           >
             <span style={{
               fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontWeight: 800, fontSize: "1.5rem",
-              letterSpacing: "-0.04em",
-              color: t.text, // Dynamic Black/White
+              fontWeight: 900,
+              fontSize: "1.45rem",
+              letterSpacing: "-0.05em",
+              color: logoColor,
               lineHeight: 1,
             }}>
               RenoBill
             </span>
           </Link>
 
-          {/* ── DESKTOP NAV ── */}
-          <div className="hidden md:flex items-center gap-10">
-
-            {/* PRODUCT DROPDOWN */}
+          {/* ── DESKTOP NAV ────────────────────────────────────── */}
+          <div
+            className="hidden md:flex"
+            style={{ alignItems: "center", gap: 36 }}
+          >
+            {/* Products dropdown */}
             <div ref={dropRef} style={{ position: "relative" }}>
               <button
                 className="nav-link"
-                style={{ color: productOpen ? t.text : t.textMuted }}
+                style={{ color: productOpen ? linkHover : linkColor }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = linkHover)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = productOpen ? linkHover : linkColor)}
                 onClick={() => setProductOpen((p) => !p)}
               >
                 Products
-                <motion.span animate={{ rotate: productOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                  <ChevronDown size={12} />
+                <motion.span
+                  animate={{ rotate: productOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ display: "flex" }}
+                >
+                  <ChevronDown size={13} strokeWidth={2} />
                 </motion.span>
               </button>
 
               <AnimatePresence>
                 {productOpen && (
                   <motion.div
-                    className="cool-dropdown"
-                    initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                    className="prod-dropdown"
+                    initial={{ opacity: 0, y: 8,  scale: 0.97 }}
                     animate={{ opacity: 1, y: 0,  scale: 1    }}
-                    exit={{   opacity: 0, y: 10, scale: 0.96 }}
-                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    exit={{   opacity: 0, y: 8,  scale: 0.97 }}
+                    transition={{ duration: 0.16, ease: "easeOut" }}
                     style={{
-                      // Dark dropdown always looks cool, or adapt to theme
-                      background: isDark ? "rgba(10, 10, 12, 0.95)" : "rgba(255, 255, 255, 0.95)",
-                      border: `1px solid ${t.border}`,
+                      background: isDark
+                        ? "rgba(12,12,18,0.96)"
+                        : "rgba(255,255,255,0.96)",
+                      border: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.07)"}`,
+                      boxShadow: isDark
+                        ? "0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04)"
+                        : "0 24px 60px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04)",
                     }}
                   >
-                    <div>
-                      {PRODUCTS.map((p) => {
-                        const Icon = p.icon;
-                        return (
-                          <Link 
-                            key={p.label} 
-                            to={p.path} 
-                            className="cool-item" 
-                            onClick={() => setProductOpen(false)}
-                            // Manual hover handling for light mode visibility
-                            onMouseEnter={(e) => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)"}
-                            onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-                          >
+                    {PRODUCTS.map((p) => {
+                      const Icon = p.icon;
+                      return (
+                        <Link
+                          key={p.label}
+                          to={p.path}
+                          className="prod-item"
+                          onClick={() => setProductOpen(false)}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.background = isDark
+                              ? "rgba(255,255,255,0.07)"
+                              : "rgba(0,0,0,0.04)")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.background = "transparent")
+                          }
+                        >
+                          <div style={{
+                            width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                            background: isDark ? "rgba(255,255,255,0.06)" : `${p.color}18`,
+                            display: "flex", alignItems: "center", justifyContent: "center",
+                          }}>
+                            <Icon size={17} strokeWidth={2} color={p.color} />
+                          </div>
+                          <div>
                             <div style={{
-                              width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-                              background: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)",
-                              display: "flex", alignItems: "center", justifyContent: "center",
-                              color: p.color // Colored icons
+                              fontFamily: "'Plus Jakarta Sans', sans-serif",
+                              fontWeight: 600, fontSize: "0.875rem",
+                              color: isDark ? "#ffffff" : "#0c121c",
+                              marginBottom: 2,
                             }}>
-                              <Icon size={18} strokeWidth={2} />
+                              {p.label}
                             </div>
-                            <div>
-                              <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 600, fontSize: "0.9rem", color: t.text, marginBottom: 2 }}>
-                                {p.label}
-                              </div>
-                              <div style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.65rem", textTransform: "uppercase", letterSpacing: "0.05em", color: t.textMuted }}>
-                                {p.desc}
-                              </div>
+                            <div style={{
+                              fontFamily: "'Plus Jakarta Sans', sans-serif",
+                              fontSize: "0.72rem", color: linkColor,
+                            }}>
+                              {p.desc}
                             </div>
-                          </Link>
-                        );
-                      })}
-                    </div>
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            {/* ABOUT */}
-            <Link to="/about" className="nav-link" style={{ color: t.textMuted }}
-               onMouseEnter={(e) => (e.currentTarget.style.color = t.text)}
-               onMouseLeave={(e) => (e.currentTarget.style.color = t.textMuted)}>
-               About
+            {/* About */}
+            <Link
+              to="/about"
+              className="nav-link"
+              style={{ color: linkColor }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = linkHover)}
+              onMouseLeave={(e) => (e.currentTarget.style.color = linkColor)}
+            >
+              About
             </Link>
 
-            {/* CONTACT */}
-            <Link to="/contact" className="nav-link" style={{ color: t.textMuted }}
-               onMouseEnter={(e) => (e.currentTarget.style.color = t.text)}
-               onMouseLeave={(e) => (e.currentTarget.style.color = t.textMuted)}>
-               Contact
+            {/* Contact */}
+            <Link
+              to="/contact"
+              className="nav-link"
+              style={{ color: linkColor }}
+              onMouseEnter={(e) => (e.currentTarget.style.color = linkHover)}
+              onMouseLeave={(e) => (e.currentTarget.style.color = linkColor)}
+            >
+              Contact
             </Link>
           </div>
 
-          {/* ── RIGHT CONTROLS ── */}
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          {/* ── RIGHT CONTROLS ─────────────────────────────────── */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
 
-            {/* THEME TOGGLE SWITCH */}
-            <div 
-              className="theme-switch" 
+            {/* Theme toggle */}
+            <div
+              className="theme-switch"
               onClick={toggleTheme}
               style={{
-                background: t.bgCard,
-                borderColor: t.border
+                background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)",
+                borderColor: isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.1)",
               }}
             >
-              <motion.div 
+              <div
                 className="switch-knob"
-                layout
-                transition={{ type: "spring", stiffness: 700, damping: 30 }}
                 style={{
                   background: isDark ? "#ffffff" : "#0f172a",
-                  marginLeft: isDark ? "22px" : "0px",
-                  color: isDark ? "#000" : "#fff"
+                  marginLeft: isDark ? "20px" : "0px",
+                  color: isDark ? "#000" : "#fff",
                 }}
               >
-                 {isDark ? <Moon size={12} fill="currentColor" /> : <Sun size={12} fill="currentColor" />}
-              </motion.div>
+                {isDark
+                  ? <Moon size={11} fill="currentColor" />
+                  : <Sun  size={11} fill="currentColor" />
+                }
+              </div>
             </div>
 
-            {/* CTA */}
+            {/* CTA — desktop */}
             <button
-              className="contact-btn hidden md:block"
+              className="cta-btn hidden md:block"
               onClick={onContactClick}
               style={{
-                background: isDark ? "#ffffff" : "#0c121c",
-                color:      isDark ? "#0c121c" : "#ffffff",
-                boxShadow:  isDark ? "0 0 0 1px rgba(255,255,255,0.08)" : "0 0 0 1px rgba(0,0,0,0.1)",
+                background: ctaBg,
+                color:      ctaText,
+                boxShadow: isDark
+                  ? "0 0 0 1px rgba(255,255,255,0.1), 0 4px 16px rgba(0,0,0,0.4)"
+                  : "0 0 0 1px rgba(0,0,0,0.08), 0 4px 14px rgba(0,0,0,0.1)",
               }}
             >
               Get in Touch
             </button>
 
-            {/* HAMBURGER (Mobile) */}
+            {/* Hamburger — mobile */}
             <button
-              className="hamburger-btn md:hidden"
+              className="ham-btn md:hidden"
               onClick={() => setMobileOpen((p) => !p)}
               style={{
-                background: t.bgCard,
-                border: `1px solid ${t.border}`,
-                color: t.textMuted,
+                background: isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.05)",
+                border: `1px solid ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"}`,
+                color: isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.6)",
               }}
             >
               <AnimatePresence mode="wait" initial={false}>
-                {mobileOpen ? <X key="x" size={16} /> : <Menu key="m" size={16} />}
+                {mobileOpen
+                  ? <X    key="x" size={16} />
+                  : <Menu key="m" size={16} />
+                }
               </AnimatePresence>
             </button>
           </div>
         </nav>
 
-        {/* ── MOBILE MENU (Kept Functional) ── */}
+        {/* ── MOBILE MENU ──────────────────────────────────────── */}
         <AnimatePresence>
           {mobileOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "100vh" }}
               exit={{   opacity: 0, height: 0 }}
-              transition={{ duration: 0.26, ease: [0.22,1,0.36,1] }}
+              transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: "fixed", top: 70, left: 0, right: 0,
                 overflow: "hidden",
-                borderTop: `1px solid ${t.border}`,
-                background: isDark ? "rgba(6,6,8,0.98)" : "rgba(255,255,255,0.98)",
+                borderTop: `1px solid ${isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.07)"}`,
+                background: isDark ? "rgba(6,6,10,0.98)" : "rgba(255,255,255,0.98)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
               }}
             >
-              <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 6 }}>
-                
-                {/* Mobile Products */}
+              <div style={{
+                padding: "20px 24px",
+                display: "flex", flexDirection: "column", gap: 4,
+              }}>
+                {/* Products accordion */}
                 <button
                   onClick={() => setMobileProducts((p) => !p)}
                   style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "12px 0", background: "none", border: "none", cursor: "pointer", width: "100%",
+                    padding: "12px 0",
+                    background: "none", border: "none", cursor: "pointer", width: "100%",
                   }}
                 >
-                  <span style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted }}>
+                  <span style={{
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontWeight: 600, fontSize: "0.9rem",
+                    color: isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.45)",
+                  }}>
                     Products
                   </span>
-                  <motion.span animate={{ rotate: mobileProducts ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                    <ChevronDown size={14} color={t.textFaint} />
+                  <motion.span
+                    animate={{ rotate: mobileProducts ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    style={{ display: "flex" }}
+                  >
+                    <ChevronDown size={14} color={isDark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.3)"} />
                   </motion.span>
                 </button>
 
@@ -374,20 +420,36 @@ export default function Header({ onContactClick }: HeaderProps) {
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      style={{ overflow: "hidden", paddingLeft: 12 }}
+                      exit={{   height: 0, opacity: 0 }}
+                      style={{ overflow: "hidden", paddingLeft: 8 }}
                     >
                       {PRODUCTS.map((p) => {
                         const Icon = p.icon;
                         return (
-                          <Link 
-                            key={p.label} 
-                            to={p.path} 
+                          <Link
+                            key={p.label}
+                            to={p.path}
                             onClick={() => setMobileOpen(false)}
-                            style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 0", textDecoration: "none", color: t.text }}
+                            style={{
+                              display: "flex", alignItems: "center", gap: 12,
+                              padding: "11px 8px", textDecoration: "none",
+                              borderRadius: 10,
+                            }}
                           >
-                            <Icon size={16} color={p.color} />
-                            <span style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 600, fontSize: "0.9rem" }}>{p.label}</span>
+                            <div style={{
+                              width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                              background: `${p.color}18`,
+                              display: "flex", alignItems: "center", justifyContent: "center",
+                            }}>
+                              <Icon size={15} strokeWidth={2} color={p.color} />
+                            </div>
+                            <span style={{
+                              fontFamily: "'Plus Jakarta Sans', sans-serif",
+                              fontWeight: 600, fontSize: "0.9rem",
+                              color: isDark ? "#ffffff" : "#0c121c",
+                            }}>
+                              {p.label}
+                            </span>
                           </Link>
                         );
                       })}
@@ -395,19 +457,34 @@ export default function Header({ onContactClick }: HeaderProps) {
                   )}
                 </AnimatePresence>
 
-                <div style={{ height: 1, background: t.border, margin: "6px 0" }}/>
+                <div style={{ height: 1, background: isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)", margin: "6px 0" }} />
 
-                <Link to="/about" onClick={() => setMobileOpen(false)} style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted, textDecoration: "none", padding: "12px 0", display: "block" }}>About</Link>
-                <Link to="/contact" onClick={() => setMobileOpen(false)} style={{ fontFamily: "'Plus Jakarta Sans',monospace", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase", color: t.textMuted, textDecoration: "none", padding: "12px 0", display: "block" }}>Contact</Link>
+                {["About", "Contact"].map((label) => (
+                  <Link
+                    key={label}
+                    to={`/${label.toLowerCase()}`}
+                    onClick={() => setMobileOpen(false)}
+                    style={{
+                      fontFamily: "'Plus Jakarta Sans', sans-serif",
+                      fontWeight: 600, fontSize: "0.9rem",
+                      color: isDark ? "rgba(255,255,255,0.55)" : "rgba(0,0,0,0.45)",
+                      textDecoration: "none",
+                      padding: "12px 0", display: "block",
+                    }}
+                  >
+                    {label}
+                  </Link>
+                ))}
 
                 <button
                   onClick={() => { onContactClick(); setMobileOpen(false); }}
                   style={{
-                    marginTop: 12, padding: "14px", borderRadius: 9999,
-                    fontFamily: "'Plus Jakarta Sans',sans-serif", fontWeight: 700, fontSize: "0.9rem",
-                    background: isDark ? "#ffffff" : "#0c121c",
-                    color:      isDark ? "#0c121c" : "#ffffff",
-                    border: "none", cursor: "pointer", width: "100%"
+                    marginTop: 16, padding: "14px",
+                    borderRadius: 9999,
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontWeight: 700, fontSize: "0.9rem",
+                    background: ctaBg, color: ctaText,
+                    border: "none", cursor: "pointer", width: "100%",
                   }}
                 >
                   Get in Touch
