@@ -108,7 +108,7 @@ export default function TrustedBy() {
       </div>
 
       {/* ── BOTTOM CTA (Matches your screenshot) ── */}
-      <div className="text-center mt-24">
+      {/* <div className="text-center mt-24">
         <p className="text-sm text-gray-500 mb-6 font-medium tracking-wide">
           From independent cafes to established franchises, we drive growth.
         </p>
@@ -128,7 +128,7 @@ export default function TrustedBy() {
             Let's Add Your Logo <ArrowRight size={16} />
           </button>
         </div>
-      </div>
+      </div> */}
 
       <style>{`
         @keyframes marquee {
